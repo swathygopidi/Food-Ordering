@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Customer Login</h2>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="name">Customer Name:</label>
+                <input type="text" id="name" name="name" placeholder="Enter your name" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+            <div class="form-group">
+                <button type="submit">Login</button>
+                <p>Not registered? 
+                    <a href="regform.html" style="text-decoration: none;">Create an account</a>
+                </p>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById("name").value;
+            const password = document.getElementById("password").value;
+
+            try {
+                const response = await fetch("http://localhost:3000/login_cust", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ name, password })
+                });
+
+                const data = await response.json();
+                alert(data.message);
+                window.location.href = data.redirect; // Redirect to the appropriate page
+            } catch (error) {
+                alert("Server error. Please try again later.");
+            }
+        });
+    </script>
+</body>
+</html>
+
